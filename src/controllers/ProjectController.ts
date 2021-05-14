@@ -11,6 +11,10 @@ interface ProjectRequestBody {
   description: string;
 }
 
+interface ProjectFilter {
+  where?: Object;
+}
+
 export default class ProjectController {
   async create ({ body }: CustomRequest<ProjectRequestBody>, res: Response) {
     try {
@@ -28,9 +32,11 @@ export default class ProjectController {
 
   async list (req: Request, res: Response) {
     const { userId } = req.query;
-    let projects: Project[];
-    if (userId) projects = await Project.find({ where: { owner: userId } });
-    else projects = await Project.find();
+    const filter: ProjectFilter = {};
+    if (userId) {
+      filter.where = { owner: userId };
+    }
+    const projects: Project[] = await Project.find(filter);
     res.status(200).json(projects);
   }
 
