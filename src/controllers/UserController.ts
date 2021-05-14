@@ -15,9 +15,13 @@ interface UserRequestBody {
 
 export default class UserController {
   async create ({ body }: CustomRequest<UserRequestBody>, res: Response) {
-    const user: User = User.create(body);
-    await user.save();
-    res.status(201).json({ id: user.uuid });
+    try {
+      const user: User = User.create(body);
+      await user.save();
+      res.status(201).json({ id: user.uuid });
+    } catch (error) {
+      res.status(400).json({ error });
+    }
   }
 
   async list (req: Request, res: Response) {

@@ -13,13 +13,17 @@ interface ProjectRequestBody {
 
 export default class ProjectController {
   async create ({ body }: CustomRequest<ProjectRequestBody>, res: Response) {
-    const user: User = await User.findOne({ uuid: body.userId });
-    const project: Project = Project.create({
-      description: body.description,
-      owner: user
-    });
-    await project.save();
-    res.status(201).json({ id: project.uuid });
+    try {
+      const user: User = await User.findOne({ uuid: body.userId });
+      const project: Project = Project.create({
+        description: body.description,
+        owner: user
+      });
+      await project.save();
+      res.status(201).json({ id: project.uuid });
+    } catch (error) {
+      res.status(400).json({ error });
+    }
   }
 
   async list (req: Request, res: Response) {
