@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import UserController from './controllers/UserController';
-import ProjectController from './controllers/ProjectController';
+import UserController from '@controllers/UserController';
+import ProjectController from '@controllers/ProjectController';
 import { validate } from 'express-validation';
-import { createUserValidator } from './validators/user/UserValidators';
-import { createProjectrValidator } from './validators/project/ProjectValidators';
+import { createUserValidator } from '@validators/user/UserValidators';
+import { createProjectrValidator } from '@validators/project/ProjectValidators';
 
 const routes = Router();
 

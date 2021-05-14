@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from '../entity/User';
+import User from '@entity/User';
 
 interface CustomRequest<T> extends Request {
   body: T;
