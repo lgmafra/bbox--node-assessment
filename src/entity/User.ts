@@ -1,6 +1,6 @@
-import { BaseEntity, BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
-import bcrypt from 'bcrypt'
-import { v4 as uuidv4 } from "uuid";
+import { BaseEntity, BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -13,11 +13,11 @@ export enum UserEvent {
   REFUSAL = 'REFUSLA'
 }
 
-@Entity("users")
+@Entity('users')
 export default class User extends BaseEntity {
-  constructor() {
+  constructor () {
     super();
-    if(!this.uuid) {
+    if (!this.uuid) {
       this.uuid = uuidv4();
     }
   }
@@ -25,32 +25,32 @@ export default class User extends BaseEntity {
   @PrimaryColumn()
   uuid: string;
 
-  @Column({ name: "first_name" })
+  @Column({ name: 'first_name' })
   firstName: string;
 
-  @Column({ name: "last_name" })
+  @Column({ name: 'last_name' })
   lastName: string;
 
-  @Column({ name: "email" })
+  @Column({ name: 'email' })
   email: string;
 
-  @Column({ name: "phone_number" })
+  @Column({ name: 'phone_number' })
   phoneNumber: string;
 
-  @Column({ name: "password" })
+  @Column({ name: 'password' })
   password: string;
 
-  @Column({ name: "role", type: "enum", enum: UserRole })
+  @Column({ name: 'role', type: 'enum', enum: UserRole })
   role: UserRole = UserRole.CLIENT;
 
-  @Column({ name: "created_at" })
+  @Column({ name: 'created_at' })
   creationDate: Date = new Date();
 
-  @Column({ name: "current_event", type: "enum", enum: UserEvent })
+  @Column({ name: 'current_event', type: 'enum', enum: UserEvent })
   currentEvent: UserEvent = UserEvent.CREATION;
 
   @BeforeInsert()
-  cryptPassword() {
+  cryptPassword () {
     this.password = bcrypt.hashSync(this.password, 10);
   }
 }

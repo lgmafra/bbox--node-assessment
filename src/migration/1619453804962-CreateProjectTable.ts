@@ -2,35 +2,35 @@ import {
   MigrationInterface,
   QueryRunner,
   Table,
-  TableForeignKey,
-} from "typeorm";
+  TableForeignKey
+} from 'typeorm';
 
 export class CreateProjectTable1619453804962 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<void> {
+  public async up (queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "projects",
+        name: 'projects',
         columns: [
-          { name: "uuid", type: "varchar", isPrimary: true },
-          { name: "description", type: "varchar" },
-          { name: "owner", type: "varchar" },
-          { name: "created_at", type: "timestamp" },
-        ],
+          { name: 'uuid', type: 'varchar', isPrimary: true },
+          { name: 'description', type: 'varchar' },
+          { name: 'owner', type: 'varchar' },
+          { name: 'created_at', type: 'timestamp' }
+        ]
       }),
       true
     );
     await queryRunner.createForeignKey(
-      "projects",
+      'projects',
       new TableForeignKey({
-        columnNames: ["owner"],
-        referencedColumnNames: ["uuid"],
-        referencedTableName: "users",
-        onDelete: "CASCADE",
+        columnNames: ['owner'],
+        referencedColumnNames: ['uuid'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE'
       })
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("projects");
+  public async down (queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('projects');
   }
 }

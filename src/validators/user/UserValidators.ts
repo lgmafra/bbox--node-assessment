@@ -1,4 +1,4 @@
-import {Joi} from 'express-validation'
+import { Joi } from 'express-validation';
 
 const createUserValidator = {
   body: Joi.object({
@@ -6,7 +6,7 @@ const createUserValidator = {
     lastName: Joi.string().required(),
     email: Joi.string().required(),
     phoneNumber: Joi.string().required(),
-    password: Joi.string().required(),
+    password: Joi.string().required()
   })
 };
 

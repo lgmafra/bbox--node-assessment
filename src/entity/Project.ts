@@ -4,16 +4,16 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
-} from "typeorm";
-import User from "./User";
-import { v4 as uuidv4 } from "uuid";
+  PrimaryColumn
+} from 'typeorm';
+import User from './User';
+import { v4 as uuidv4 } from 'uuid';
 
-@Entity("projects")
+@Entity('projects')
 export default class Project extends BaseEntity {
-  constructor() {
+  constructor () {
     super();
-    if(!this.uuid) {
+    if (!this.uuid) {
       this.uuid = uuidv4();
     }
   }
@@ -21,13 +21,13 @@ export default class Project extends BaseEntity {
   @PrimaryColumn()
   uuid: string;
 
-  @Column({ name: "description" })
+  @Column({ name: 'description' })
   description: string;
 
   @ManyToOne((type) => User)
-  @JoinColumn({ name: "owner" })
+  @JoinColumn({ name: 'owner' })
   owner: User;
 
-  @Column({ name: "created_at" })
+  @Column({ name: 'created_at' })
   creationDate: Date = new Date();
 }

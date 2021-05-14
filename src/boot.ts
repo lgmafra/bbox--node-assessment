@@ -1,6 +1,6 @@
-import express, { Request, Response, ErrorRequestHandler, NextFunction } from "express";
-import "reflect-metadata";
-import { createConnection } from "typeorm";
+import express, { Request, Response, ErrorRequestHandler, NextFunction } from 'express';
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
 import routes from './routes';
 import { ValidationError } from 'express-validation';
 
@@ -13,18 +13,18 @@ app.use(routes);
 
 app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ValidationError) {
-    return res.status(err.statusCode).json(err)
+    return res.status(err.statusCode).json(err);
   }
 
-  return res.status(500).json(err)
-})
+  return res.status(500).json(err);
+});
 
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://0.0.0.0:${PORT}`);
 });
 
 createConnection()
-  .then((_) => console.log("☁ [database]: Database connection established"))
+  .then((_) => console.log('☁ [database]: Database connection established'))
   .catch((error) =>
     console.error(`⚠ [database]: Couldn't connect to the database: ${error}`)
   );
