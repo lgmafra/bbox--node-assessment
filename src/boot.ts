@@ -1,9 +1,8 @@
 import express, { Request, Response } from "express";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
 import Project from "./entity/Project";
-import User, { UserEvent, UserRole } from "./entity/User";
+import User from "./entity/User";
 
 const PORT = process.env.PORT || 5001;
 
@@ -31,20 +30,9 @@ app.use(express.json());
 app.post(
   "/users",
   async ({ body }: CustomRequest<UserRequestBody>, res: Response) => {
-    const uuid = uuidv4();
-    const user: User = User.create({
-      uuid,
-      firstName: body.firstName,
-      lastName: body.lastName,
-      email: body.email,
-      phoneNumber: body.phoneNumber,
-      password: body.password,
-      role: UserRole.CLIENT,
-      creationDate: new Date(),
-      currentEvent: UserEvent.CREATION,
-    });
+    const user: User = User.create(body);
     await user.save();
-    res.status(201).json({ id: uuid });
+    res.status(201).json({ id: user.uuid });
   }
 );
 
@@ -71,16 +59,13 @@ app.delete("/users/:id", async (req: Request, res: Response) => {
 app.post(
   "projects",
   async ({ body }: CustomRequest<ProjectRequestBody>, res: Response) => {
-    const uuid = uuidv4();
     const user: User = await User.findOne({ uuid: body.userId });
     const project: Project = Project.create({
-      uuid,
       description: body.description,
       owner: user,
-      creationDate: new Date(),
     });
     await project.save();
-    res.status(201).json({ id: uuid });
+    res.status(201).json({ id: project.uuid });
   }
 );
 

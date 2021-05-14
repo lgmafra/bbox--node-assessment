@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
+import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from "uuid";
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -13,6 +15,13 @@ export enum UserEvent {
 
 @Entity("users")
 export default class User extends BaseEntity {
+  constructor() {
+    super();
+    if(!this.uuid) {
+      this.uuid = uuidv4();
+    }
+  }
+
   @PrimaryColumn()
   uuid: string;
 
@@ -32,11 +41,16 @@ export default class User extends BaseEntity {
   password: string;
 
   @Column({ name: "role", type: "enum", enum: UserRole })
-  role: UserRole;
+  role: UserRole = UserRole.CLIENT;
 
   @Column({ name: "created_at" })
-  creationDate: Date;
+  creationDate: Date = new Date();
 
   @Column({ name: "current_event", type: "enum", enum: UserEvent })
-  currentEvent: UserEvent;
+  currentEvent: UserEvent = UserEvent.CREATION;
+
+  @BeforeInsert()
+  cryptPassword() {
+    this.password = bcrypt.hashSync(this.password, 10);
+  }
 }

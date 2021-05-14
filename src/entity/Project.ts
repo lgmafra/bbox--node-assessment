@@ -7,9 +7,17 @@ import {
   PrimaryColumn,
 } from "typeorm";
 import User from "./User";
+import { v4 as uuidv4 } from "uuid";
 
 @Entity("projects")
 export default class Project extends BaseEntity {
+  constructor() {
+    super();
+    if(!this.uuid) {
+      this.uuid = uuidv4();
+    }
+  }
+
   @PrimaryColumn()
   uuid: string;
 
@@ -21,5 +29,5 @@ export default class Project extends BaseEntity {
   owner: User;
 
   @Column({ name: "created_at" })
-  creationDate: Date;
+  creationDate: Date = new Date();
 }
